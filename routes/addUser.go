@@ -21,7 +21,7 @@ func AddUser(w http.ResponseWriter, r *http.Request, p map[string]string) {
 
 	dbSession := databases.GetPostgresSession()
 
-	row := dbSession.QueryRow("INSERT INTO \"User\" VALUES(DEFAULT, $1) RETURNING id", data.Username)
+	row := dbSession.QueryRow("INSERT INTO \"User\" VALUES(DEFAULT, $1) RETURNING id;", data.Username)
 	var id string
 	if err = row.Scan(&id); err == nil {
 		w.WriteHeader(201)

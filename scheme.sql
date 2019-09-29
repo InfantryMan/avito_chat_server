@@ -27,7 +27,8 @@ CREATE TABLE "Chat"
 CREATE TABLE "Chat_User"
 (
     user_id INTEGER REFERENCES "User" (id) NOT NULL,
-    chat_id INTEGER REFERENCES "Chat" (id) NOT NULL
+    chat_id INTEGER REFERENCES "Chat" (id) NOT NULL,
+    UNIQUE (user_id, chat_id)
 );
 
 CREATE TABLE "Message"
