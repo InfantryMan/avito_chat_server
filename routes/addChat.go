@@ -10,19 +10,25 @@ import (
 	"net/http"
 )
 
+// Создать новый чат между пользователями
+// Запрос: POST /chats/add {"name": "chat_1", "users": ["<USER_ID_1>", "<USER_ID_2>"]}
+// Ответ: id созданного чата или HTTP-код ошибки. Количество пользователей не ограничено.
 func AddChat(w http.ResponseWriter, r *http.Request, p map[string]string) {
 	w.Header().Set("Content-Type", "application/json")
 	decoder := json.NewDecoder(r.Body)
 
 	var data models.ChatAdd
 	err := decoder.Decode(&data)
-	if err != nil {
-		log.Fatal(err)
+
+	if err != nil || data.Name == nil || *data.Name == "" || data.UsersIds == nil || len(*data.UsersIds) == 0 {
+		log.Println(err)
+		http.Error(w, http.StatusText(400), 400)
+		return
 	}
 
 	db := databases.GetPostgresSession()
 
-	for _, userId := range data.UsersIds {
+	for _, userId := range *data.UsersIds {
 		row := db.QueryRow("SELECT id FROM \"User\" WHERE id = $1;", userId)
 		var id string
 		err = row.Scan(&id)
@@ -32,7 +38,9 @@ func AddChat(w http.ResponseWriter, r *http.Request, p map[string]string) {
 				io.WriteString(w, "Нет пользователя с id "+userId)
 				return
 			} else {
-				log.Fatalln(err)
+				log.Println(err)
+				http.Error(w, http.StatusText(500), 500)
+				return
 			}
 		}
 
@@ -47,8 +55,13 @@ func AddChat(w http.ResponseWriter, r *http.Request, p map[string]string) {
 		return
 	}
 
-	for _, userId := range data.UsersIds {
-		db.Exec("INSERT INTO \"Chat_User\" VALUES($1, $2);", userId, chatId)
+	for _, userId := range *data.UsersIds {
+		_, err := db.Exec("INSERT INTO \"Chat_User\" VALUES($1, $2);", userId, chatId)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
 	}
 
 	w.WriteHeader(201)

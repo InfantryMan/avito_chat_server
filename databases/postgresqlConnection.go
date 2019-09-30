@@ -34,8 +34,6 @@ func ConnectDB() {
 
 	dbUri := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
-	fmt.Println(dbUri)
-
 	conn, err := sql.Open("postgres", dbUri)
 	if err != nil {
 		log.Fatalln("ConnectDB: unable to connect to DB\n", err)
@@ -47,7 +45,7 @@ func ConnectDB() {
 		log.Fatalln("ConnectDB: unable to ping DB\n", err)
 	}
 
-	log.Println("Successfully connected to database " + dbname)
+	log.Println("Successfully connected to database \"" + dbname + "\" on " + host + ":" + port)
 }
 
 func GetPostgresSession() *sql.DB {

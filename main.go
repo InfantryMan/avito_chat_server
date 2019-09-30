@@ -1,6 +1,7 @@
 package main
 
 import (
+	"awesomeProject/app"
 	"awesomeProject/databases"
 	_ "awesomeProject/models"
 	"awesomeProject/routes"
@@ -17,6 +18,12 @@ func main() {
 	router.POST("/users/add", routes.AddUser)
 	router.POST("/chats/add", routes.AddChat)
 	router.POST("/messages/add", routes.AddMessage)
+	router.POST("/chats/get", routes.GetChats)
+	router.POST("/messages/get", routes.GetMessages)
 
-	log.Fatal(http.ListenAndServe(":9000", router))
+	host, port := app.GetHostAndPort()
+	addr := host + ":" + port
+	log.Println("Application is running on " + addr)
+
+	log.Fatal(http.ListenAndServe(addr, router))
 }
