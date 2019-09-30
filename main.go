@@ -16,6 +16,7 @@ func main() {
 	router := httptreemux.New()
 	router.POST("/users/add", routes.AddUser)
 	router.POST("/chats/add", routes.AddChat)
+	router.POST("/messages/add", routes.AddMessage)
 
 	log.Fatal(http.ListenAndServe(":9000", router))
 }

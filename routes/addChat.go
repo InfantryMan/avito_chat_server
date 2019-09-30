@@ -28,7 +28,7 @@ func AddChat(w http.ResponseWriter, r *http.Request, p map[string]string) {
 		err = row.Scan(&id)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				w.WriteHeader(409)
+				w.WriteHeader(404)
 				io.WriteString(w, "Нет пользователя с id "+userId)
 				return
 			} else {
