@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"awesomeProject/databases"
-	"awesomeProject/models"
 	"encoding/json"
+	"github.com/InfantryMan/avito_chat_server/databases"
+	"github.com/InfantryMan/avito_chat_server/models"
 	"io"
 	"log"
 	"net/http"

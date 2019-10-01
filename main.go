@@ -1,10 +1,10 @@
 package main
 
 import (
-	"awesomeProject/app"
-	"awesomeProject/databases"
-	_ "awesomeProject/models"
-	"awesomeProject/routes"
+	"github.com/InfantryMan/avito_chat_server/app"
+	"github.com/InfantryMan/avito_chat_server/databases"
+	_ "github.com/InfantryMan/avito_chat_server/models"
+	"github.com/InfantryMan/avito_chat_server/routes"
 	"github.com/dimfeld/httptreemux"
 	"log"
 	"net/http"
